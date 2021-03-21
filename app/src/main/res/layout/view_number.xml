@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+    <TextView
+        android:background="@drawable/border"
+        android:id="@+id/number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="30dp"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        tools:text="6"
+        android:layout_gravity="center"
+        android:gravity="center"
+        tools:textColor="@color/purple_700" />
+
+</FrameLayout>
