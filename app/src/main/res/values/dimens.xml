@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="width_news_item">70dp</dimen>
+    <dimen name="height_news_item">50dp</dimen>
+    <dimen name="text_size_news_item">20sp</dimen>
+    <dimen name="padding_news_item">10dp</dimen>
+    <dimen name="padding_view_number">30dp</dimen>
+    <dimen name="size_text_view_number">50sp</dimen>
+</resources>
