@@ -1,32 +1,43 @@
 package android.homework;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+
+interface OnNumberClickListener {
+    void onNumberClick(NewsModel model);
+}
+
+public class MainActivity extends AppCompatActivity  implements OnNumberClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.base_activity);
+        setContentView(R.layout.activity_main);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
+        if (getSupportFragmentManager().findFragmentById(R.id.base_fragment) == null) {
+            BaseFragment baseFragment = new BaseFragment();
+            getSupportFragmentManager()
+                    .beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.base_fragment, BaseFragment.class, null)
+                    .add(R.id.base_fragment, baseFragment)
                     .commit();
         }
     }
 
     @Override
-    protected void onSaveInstanceState(@NonNull final Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
+    public void onNumberClick(NewsModel model) {
+        NumberFragment fragment = new NumberFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(NumberFragment.EXTRA_NUMBER, model.mNumber);
+        bundle.putInt(NumberFragment.EXTRA_COLOR, model.mColor);
+        fragment.setArguments(bundle);
 
-    @Override
-    protected void onRestoreInstanceState(final Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.base_fragment, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

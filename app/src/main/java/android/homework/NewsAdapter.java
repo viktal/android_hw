@@ -13,39 +13,36 @@ import java.util.List;
 class NewsAdapter extends RecyclerView.Adapter<NewsViewHolder> {
 
     int count;
-    List<NewsModel> data;
+    DataSource dataSource;
+    OnNumberClickListener onNumberClickListener;
 
-    public NewsAdapter(int count) {
+    public NewsAdapter(int count, OnNumberClickListener onNumberClickListener) {
         this.count = count;
-        this.data = DataSource.getInstance(count).getRemoteData();
+        this.onNumberClickListener = onNumberClickListener;
+        this.dataSource = new DataSource(count);
     }
 
     public void insert(int newNumber) {
-        int color;
-        if (newNumber%2 == 0) {
-            color = Color.RED;
-        } else {
-            color = Color.BLUE;
-        }
-        NewsModel newData = new NewsModel(newNumber, color);
-        data.add(newData);
+        dataSource.insertData(newNumber);
     }
 
     @NonNull
     @Override
     public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_item, parent, false);
-        return new NewsViewHolder(view);
+        NewsViewHolder holder = new NewsViewHolder(view);
+        holder.setOnNumberClickListener(onNumberClickListener);
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
-        NewsModel model = data.get(position);
+        NewsModel model = dataSource.getModel(position);
         holder.bind(model);
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return dataSource.getDataSize();
     }
 }

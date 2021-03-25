@@ -4,16 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="10dp"
-    android:paddingStart="15dp"
-    android:paddingEnd="15dp">
+    android:padding="@dimen/padding_news_item">
 
         <TextView
             android:background="@drawable/border"
             android:id="@+id/title"
-            android:layout_width="70dp"
-            android:layout_height="50dp"
-            android:textSize="20sp"
+            android:layout_width="@dimen/width_news_item"
+            android:layout_height="@dimen/height_news_item"
+            android:textSize="@dimen/text_size_news_item"
             android:textStyle="bold"
             tools:text="6"
             android:layout_gravity="center"

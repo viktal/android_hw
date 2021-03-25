@@ -14,40 +14,47 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class BaseFragment extends Fragment {
-    public BaseFragment() {}
+
+    public static final String COUNT_NUMBERS = "count_numbers";
+    static final int COUNT_COLUMN_LANDSCAPE = 4;
+    static final int COUNT_COLUMN_PORTRAIT = 3;
+    static final int COUNT_NUMBERS_DEFAULT = 100;
 
     android.homework.NewsAdapter adapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_main, container, false);
+        super.onCreateView(inflater, container, savedInstanceState);
+
+        View view = inflater.inflate(R.layout.base_fragment, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.news_feed);
 
         int currentOrientation = getResources().getConfiguration().orientation;
         GridLayoutManager grid;
         if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
-            grid = new GridLayoutManager(view.getContext(), 4);
+            grid = new GridLayoutManager(view.getContext(), COUNT_COLUMN_LANDSCAPE);
         }
         else {
-            grid = new GridLayoutManager(view.getContext(), 3);
+            grid = new GridLayoutManager(view.getContext(), COUNT_COLUMN_PORTRAIT);
         }
         recyclerView.setLayoutManager(grid);
 
-        if (savedInstanceState != null) {
-            int count = savedInstanceState.getInt(Constants.COUNT_NUMBERS);
-            adapter = new android.homework.NewsAdapter(count);
-        } else {
-            adapter = new android.homework.NewsAdapter(100);
-        }
+        MainActivity activity = (MainActivity)requireActivity();
 
+        if (savedInstanceState != null) {
+            int count = savedInstanceState.getInt(COUNT_NUMBERS);
+            adapter = new android.homework.NewsAdapter(count, activity);
+        } else if (adapter == null) {
+            adapter = new android.homework.NewsAdapter(COUNT_NUMBERS_DEFAULT, activity);
+        }
 
         recyclerView.setAdapter(adapter);
         Button button = view.findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adapter.insert(adapter.getItemCount()+ 1);
+                adapter.insert(adapter.getItemCount() + 1);
                 adapter.notifyItemInserted(adapter.getItemCount() + 1);
             }
         });
@@ -57,6 +64,11 @@ public class BaseFragment extends Fragment {
     @Override
     public void onSaveInstanceState(final Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(Constants.COUNT_NUMBERS, adapter.getItemCount());
+        if (adapter != null) {
+            outState.putInt(COUNT_NUMBERS, adapter.getItemCount());
+        } else {
+            outState.putInt(COUNT_NUMBERS, COUNT_NUMBERS_DEFAULT);
+        }
+
     }
 }
